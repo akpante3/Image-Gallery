@@ -1,11 +1,16 @@
 import "./App.css";
 import {DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensors,  useSensor, DragStartEvent, DragEndEvent} from '@dnd-kit/core';
 import {
+  arrayMove,
   // arrayMove,
-  // SortableContext,
+  SortableContext,
   sortableKeyboardCoordinates,
-  // rectSortingStrategy,
+  rectSortingStrategy,
 } from "@dnd-kit/sortable";
+import { IImageGallery } from "./types/global.types";
+import { useState } from "react";
+import { initialImageData } from "./data";
+import ImageCard from "./components/Cards/ImageCard";
 
 
 // import {Draggable} from './Draggable';
@@ -15,6 +20,10 @@ import {
 
 
 function App() {
+  const [activeItem, setActiveItem] = useState<IImageGallery | null>(null);
+  const [galleryData, setGalleryData] = useState(initialImageData);
+
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -28,18 +37,43 @@ function App() {
 
     if (!id) return;
 
-    // const currentItem = galleryData.find((item) => item.id === id);
+    const currentItem = galleryData.find((item) => item.id === id);
 
-    // setActiveItem(currentItem || null);
+    setActiveItem(currentItem || null);
   };
-  const handleDragEnd = () => {
-    // setActiveItem(null);
-    // const { active, over } = event;
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveItem(null);
+    const { active, over } = event;
 
-    // if (!over) {
-    //   return;
-    // }
+    if (!over) {
+      return;
+    }
+
+    if(active.id !== over.id) {
+      setGalleryData((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+
+        return arrayMove(items,oldIndex, newIndex)
+      })
+    }
   }
+
+  const handleSelectImage = (id: string | number) => {
+    // if galleryData.isSelected === true then set to false and vice versa
+    const newGalleryData = galleryData.map((imageItem) => {
+      if (imageItem.id === id) {
+        return {
+          ...imageItem,
+          isSelected: !imageItem.isSelected,
+        };
+      }
+
+      return imageItem;
+    });
+
+    setGalleryData(newGalleryData);
+  };
 
   return (
     <div className="min-h-screen">
@@ -53,8 +87,37 @@ function App() {
                        onDragEnd={handleDragEnd}
            
           >
-            {/* <Draggable />
-            <Droppable /> */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 p-8">
+              <SortableContext
+                items={galleryData}
+                strategy={rectSortingStrategy}
+              >
+                {galleryData.map((imageItem) => {
+                  return (
+                    <ImageCard
+                      key={imageItem.id}
+                      id={imageItem.id}
+                      isSelected={imageItem.isSelected}
+                      slug={imageItem.slug}
+                      onClick={handleSelectImage}
+                    />
+                  );
+                  // return (
+                  //   <div><img src={imageItem.slug} alt="" /></div>
+                  // )
+                })}
+              </SortableContext>
+              {/* <AddImageCard setGalleryData={setGalleryData} />
+
+              <DragOverlay adjustScale={true} wrapperElement="div">
+                {activeItem ? (
+                  <ImageOverlayCard
+                    className="absolute z-50 h-full w-full"
+                    slug={activeItem.slug}
+                  />
+                ) : null}
+              </DragOverlay> */}
+            </div>
           </DndContext>
         </div>
       </div>
