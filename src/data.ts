@@ -3,22 +3,22 @@ import { IImageGallery } from "./types/global.types";
 export const initialImageData: IImageGallery[] = [
   {
     id: "1",
-    slug: "/assets/images/image-1.jpg",
+    slug: "/assets/images/image-1.jpeg",
     isSelected: false,
   },
   {
     id: "2",
-    slug: "/assets/images/image-2.jpg",
+    slug: "/assets/images/image-2.jpeg",
     isSelected: false,
   },
   {
     id: "3",
-    slug: "/assets/images/image-3.jpg",
+    slug: "/assets/images/image-3.jpeg",
     isSelected: false,
   },
   {
     id: "4",
-    slug: "/assets/images/image-4.jpg",
+    slug: "/assets/images/image-4.jpeg",
     isSelected: false,
   },
   {

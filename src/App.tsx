@@ -11,6 +11,7 @@ import { IImageGallery } from "./types/global.types";
 import { useState } from "react";
 import { initialImageData } from "./data";
 import ImageCard from "./components/Cards/ImageCard";
+import AddImageCard from "./components/Cards/AddImageCard";
 
 
 // import {Draggable} from './Draggable';
@@ -107,9 +108,9 @@ function App() {
                   // )
                 })}
               </SortableContext>
-              {/* <AddImageCard setGalleryData={setGalleryData} />
+              <AddImageCard setGalleryData={setGalleryData} />
 
-              <DragOverlay adjustScale={true} wrapperElement="div">
+              {/* <DragOverlay adjustScale={true} wrapperElement="div">
                 {activeItem ? (
                   <ImageOverlayCard
                     className="absolute z-50 h-full w-full"
