@@ -49,6 +49,7 @@ function App() {
     setActiveItem(currentItem || null);
   };
   const handleDragEnd = (event: DragEndEvent) => {
+    console.log(activeItem)
     setActiveItem(null);
     const { active, over } = event;
 
