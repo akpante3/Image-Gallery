@@ -39,6 +39,7 @@ const ImageCard = ({
 
   return (
     <div
+      title="click and drag to change position"
       ref={setNodeRef}
       style={style}
       className={twMerge(

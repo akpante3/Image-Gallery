@@ -15,7 +15,6 @@ const AddImageCard = ({ setGalleryData }: IAddImageCard) => {
 
   const handleImageSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // get image url from input
     const imageUrl = event.currentTarget["image-url"].value;
 
     if (!imageUrl) return;

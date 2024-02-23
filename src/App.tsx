@@ -1,5 +1,15 @@
 import "./App.css";
-import {DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensors,  useSensor, DragStartEvent, DragEndEvent} from '@dnd-kit/core';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensors,
+  useSensor,
+  DragStartEvent,
+  DragEndEvent,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   // arrayMove,
@@ -12,18 +22,14 @@ import { useState } from "react";
 import { initialImageData } from "./data";
 import ImageCard from "./components/Cards/ImageCard";
 import AddImageCard from "./components/Cards/AddImageCard";
-
+import HeaderBlock from "./components/Header/HeaderBlock";
 
 // import {Draggable} from './Draggable';
 // import {Droppable} from './Droppable';
 
-
-
-
 function App() {
   const [activeItem, setActiveItem] = useState<IImageGallery | null>(null);
   const [galleryData, setGalleryData] = useState(initialImageData);
-
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -50,15 +56,24 @@ function App() {
       return;
     }
 
-    if(active.id !== over.id) {
+    if (active.id !== over.id) {
       setGalleryData((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
 
-        return arrayMove(items,oldIndex, newIndex)
-      })
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
-  }
+  };
+
+  const handleOnDelete = (selectedItems: IImageGallery[]) => {
+    // if galleryData.isSelected === true then filter out the selected items and return the rest
+    const newGalleryData = galleryData.filter(
+      (imageItem) => !selectedItems.includes(imageItem)
+    );
+
+    setGalleryData(newGalleryData);
+  };
 
   const handleSelectImage = (id: string | number) => {
     // if galleryData.isSelected === true then set to false and vice versa
@@ -77,16 +92,15 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="container flex flex-col items-center">
+    <div className="min-h-screen min-w-full">
+      <div className="container flex flex-col items-center min-w-full">
         <div className="bg-white my-8 rounded-lg shadow max-w-5xl grid">
-          <header  className="text-2xl">Showcase</header>
+        <HeaderBlock onDelete={handleOnDelete} galleryData={galleryData} />
           <DndContext
-                       sensors={sensors}
-                       collisionDetection={closestCenter}
-                       onDragStart={handleDragStart}
-                       onDragEnd={handleDragEnd}
-           
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
           >
             <div className="grid grid-cols-2 md:grid-cols-5 gap-8 p-8">
               <SortableContext

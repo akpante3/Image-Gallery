@@ -23,7 +23,7 @@ export const initialImageData: IImageGallery[] = [
   },
   {
     id: "5",
-    slug: "/assets/images/image-5.jpg",
+    slug: "/assets/images/image-5.jpeg",
     isSelected: false,
   },
   {
@@ -48,12 +48,12 @@ export const initialImageData: IImageGallery[] = [
   },
   {
     id: "10",
-    slug: "/assets/images/image-10.jpg",
+    slug: "/assets/images/image-10.jpeg",
     isSelected: false,
   },
   {
     id: "11",
-    slug: "/assets/images/image-11.jpg",
+    slug: "/assets/images/image-11.jpeg",
     isSelected: false,
   },
 ];
